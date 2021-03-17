@@ -4,14 +4,14 @@
 	Session::go();
 	switch ($_SERVER['REQUEST_URI']) {
 		case "/script.js":
-			require '/var/www/script.js';
+			require __DIR__.'/script.js';
 			break;
 		case "/style/style.css":
-			require '/var/www/style/style.css';
+			require __DIR__.'/style/style.css';
 			header("Content-Type: text/css");
 			break;
 		case "/test.php":
-			require '/var/www/test.php';
+			require __DIR__.'/test.php';
 			break;
 		default:
 			Route::go();
