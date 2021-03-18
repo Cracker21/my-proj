@@ -1,6 +1,6 @@
 <?php
 	$title = "Login";
-	$data = <<<EOD
+	$html = <<<EOD
 	<form id="a" action="login">
 		<label>Логин:</label>
 		<input type="text" name="name">
