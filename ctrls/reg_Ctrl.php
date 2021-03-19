@@ -7,9 +7,9 @@ class Reg_Ctrl extends Controller {
 	}
 	static function post(){
 		if(@$_POST['action']=='sendCode')
-			echo json_encode(['res' => Reg_Mod::sendCode()]);
+			echo json_encode(['msg' => Reg_Mod::sendCode()]);
 		else
-			echo json_encode(['res' => 'suc']);
+			echo json_encode(['msg' => 'suc']);
 	}
 }
 

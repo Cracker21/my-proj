@@ -1,3 +1,3 @@
 <?php
 $title = "Profile";
-echo "prof view";
+$html = 'profile data';

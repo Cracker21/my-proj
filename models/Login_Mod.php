@@ -3,22 +3,30 @@
 class Login_Mod extends Model{
 	private static $name;
 	private static $pass;
+	private static $error;
 
 	static function enter(){
 		if(self::credAreValid()){
 			if(self::passIsCorrect()){
 				$_SESSION['auth'] = true;
-				return "good";
+				return "1";
 			}else{
-				return "bad";
+				return self::$error;
 			}
+		}else{
+			return self::$error;
 		}
 	}
 
 	private static function credAreValid(){
-		self::$name = $_POST['name'];
-		self::$pass = $_POST['pass'];
-		return true;
+		self::$name = trim($_POST['name']);
+		self::$pass = trim($_POST['pass']);
+		if(empty(self::$name)||empty(self::$pass)){
+			self::$error = 'Заполните все поля';
+			return false;
+		}else{
+			return true;
+		}
 	}
 
 	private static function passIsCorrect(){
@@ -27,9 +35,13 @@ class Login_Mod extends Model{
 		if($res = $db->fetch("select * from users where name = :name", [':name'=>self::$name])){
 			if($res['name']==self::$name&&$res['pass']==self::$pass)
 				return true;
-			else
+			else{
+				self::$error = 'Неверный логин или пароль';
 				return false;
-		}else
+			}
+		}else{
+			self::$error = 'Неверный логин или пароль';
 			return false;
+		}
 	}
 }

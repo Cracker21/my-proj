@@ -12,9 +12,6 @@
 			require __DIR__.'/style/style.css';
 			header("Content-Type: text/css");
 			break;
-		case "/test.php":
-			require __DIR__.'/test.php';
-			break;
 		default:
 			Route::go();
 	}

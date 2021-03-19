@@ -6,6 +6,6 @@ class Login_Ctrl extends Controller {
 		View::generate('login_view.php', 'template.php', @$data);
 	}
 	static function post(){
-		echo json_encode(['res' => Login_Mod::enter()]);
+		echo json_encode(['msg' => Login_Mod::enter()]);
 	}
 }

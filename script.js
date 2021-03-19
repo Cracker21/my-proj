@@ -13,15 +13,18 @@ async function sendCode(){
 	data.append('action', 'sendCode');
 	data.append('email', email.value);
 	let rslt = await req('reg', data);
-	b.innerHTML = rslt.res;
+	b.innerHTML = rslt.msg;
 }
 
 async function reg(rslt){
-	b.innerHTML = rslt.res;
+	b.innerHTML = rslt.msg;
 }
 
 async function login(rslt){
-	b.innerHTML = rslt.res;
+  if(rslt.msg=='1')
+    location.href = 'profile';
+  else
+	  b.innerHTML = rslt.msg;
 }
 
 async function req(act, data){
