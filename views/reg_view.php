@@ -1,6 +1,6 @@
 <?php
 $title = "Registration";
-$data = <<<EOD
+$html = <<<EOD
 <div id='form'>
 	<form action='reg'>
 		<label>Имя</label><br>
