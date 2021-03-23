@@ -3,26 +3,31 @@
 class Login_Mod extends Model{
 	private static $name;
 	private static $pass;
-	private static $error;
+	private static $err;
+	private static $usid;
 
 	static function enter(){
 		if(self::credAreValid()){
 			if(self::passIsCorrect()){
-				$_SESSION['auth'] = true;
+				$_SESSION['usid'] = self::$usid;
 				return "1";
 			}else{
-				return self::$error;
+				return self::$err;
 			}
 		}else{
-			return self::$error;
+			return self::$err;
 		}
+	}
+	static function logout(){
+		unset($_SESSION['usid']);
+		return '1';
 	}
 
 	private static function credAreValid(){
 		self::$name = trim($_POST['name']);
 		self::$pass = trim($_POST['pass']);
 		if(empty(self::$name)||empty(self::$pass)){
-			self::$error = 'Заполните все поля';
+			self::$err = 'Заполните все поля';
 			return false;
 		}else{
 			return true;
@@ -32,15 +37,16 @@ class Login_Mod extends Model{
 	private static function passIsCorrect(){
 		require 'config.php';
 		$db = new DB('my', $DB_USER, $DB_PASS);
-		if($res = $db->fetch("select * from users where name = :name", [':name'=>self::$name])){
-			if($res['name']==self::$name&&$res['pass']==self::$pass)
+		if($res = $db->fetchPr("select * from users where name = :name", [':name'=>self::$name])){
+			if($res['name']==self::$name&&$res['pass']==self::$pass){
+				self::$usid = $res['user_id'];
 				return true;
-			else{
-				self::$error = 'Неверный логин или пароль';
+			}else{
+				self::$err = 'Неверный логин или пароль';
 				return false;
 			}
 		}else{
-			self::$error = 'Неверный логин или пароль';
+			self::$err = 'Неверный логин или пароль';
 			return false;
 		}
 	}

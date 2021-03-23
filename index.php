@@ -14,7 +14,7 @@
 				header("Content-Type: text/css");
 				break;
 			default:
-				Route::go();
+				Route::handle();
 		}
 	}catch(Error $e){
 		$msg = sprintf("|%s| Error(%d): %s in %s at %d\n",strftime('%c'), $e->getCode(), $e->getMessage(), $e->getFile(), $e->getLine());

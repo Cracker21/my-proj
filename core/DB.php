@@ -15,11 +15,17 @@
 			$dbh = new PDO('mysql:host=localhost;dbname='.$this->dbname, $this->user, $this->pass);
 			return $this->conn = $dbh;
 		}
-		function fetch($query, $where){
+		function fetchPr($query, $where){						//подготовленный селект
 			$res = $this->conn->prepare($query);
 			$res->execute($where);
     		$row = $res->fetch(PDO::FETCH_ASSOC);
     		return $row;
+		}
+
+		function fetch($query){									//обычный селект
+			$res = $this->conn->query($query);
+			$row = $res->fetch(PDO::FETCH_ASSOC);
+			return $row;
 		}
 
 	}
