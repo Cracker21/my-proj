@@ -35,8 +35,7 @@ class Login_Mod extends Model{
 	}
 
 	private static function passIsCorrect(){
-		require ROOT.'/config.php';
-		$db = new DB('my', $DB_USER, $DB_PASS);
+		$db = DB::get();
 		if($res = $db->fetchPr("select * from users where name = :name", [':name'=>self::$name])){
 			if($res['name']==self::$name&&$res['pass']==self::$pass){
 				self::$usid = $res['user_id'];

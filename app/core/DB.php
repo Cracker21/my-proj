@@ -1,18 +1,20 @@
 <?php
-	class DB{
+	class DB {
 		private $conn;
-		private $dbname;
-		private $user;
-		private $pass;
+		private static $inst = null;
 
-		function __construct($dbname,$user,$pass){
-			$this->dbname = $dbname;
-			$this->user = $user;
-			$this->pass = $pass;
-			$this->connect();
+		private function __construct() {}
+		
+		static function get(){
+			if(is_null(self::$inst)){
+				self::$inst = new self();
+				self::$inst->connect();
+			}
+			return self::$inst;
 		}
-		function connect(){
-			$dbh = new PDO('mysql:host=localhost;dbname='.$this->dbname, $this->user, $this->pass);
+		private function connect(){
+			require ROOT.'/config.php';
+			$dbh = new PDO('mysql:host=localhost;dbname=my', $DB_USER, $DB_PASS);
 			return $this->conn = $dbh;
 		}
 		function fetchPr($query, $where){						//подготовленный селект
