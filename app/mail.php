@@ -17,9 +17,9 @@ $mail->CharSet = "utf-8";
 $mail->SMTPAuth = true;
 $mail->Username = $EMAIL; // email
 $mail->Password = $EMAIL_PASS; // password
-$mail->setFrom($EMAIL, 'name'); // From email and name
-$mail->addAddress($EMAIL, 'Mr. Brown'); // to email and name
-$mail->Subject = 'PHPMailer GMail SMTP test';
+$mail->setFrom('no-reply@pent.com', 'Pentagram'); // From email and name
+//$mail->addAddress($EMAIL, 'Mr. Brown'); // to email and name
+//$mail->Subject = '';
 $mail->msgHTML("test body"); 
 $mail->AltBody = 'HTML messaging not supported'; // If html emails is not supported by the receiver, show this body
 $mail->SMTPOptions = array(

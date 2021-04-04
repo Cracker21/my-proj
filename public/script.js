@@ -15,19 +15,33 @@ async function sendCode(){
 	data.append('act', 'sendCode');
 	data.append('email', email.value);
 	let rslt = await req('reg', data);
-	b.innerHTML = rslt.msg;
+	code.innerHTML = rslt.msg;
+}
+async function confEmail(){
+  let data = new FormData();
+  data.append('act', 'confirmEmail');
+  data.append('mailCode', mailCode.value);
+  let rslt = await req('reg', data);
+  if(rslt.msg[0]){
+    code.innerHTML = rslt.msg[1];
+    b.innerHTML = "";
+  }else
+    b.innerHTML = rslt.msg[1];
 }
 
 async function logout(){
-  let data = new FormData();
-  data.append('act', 'logout');
-  let rslt = await req('login', data);
-  if(rslt.msg == '1')
-    location.href = 'login';
+    let data = new FormData();
+    data.append('act', 'logout');
+    let rslt = await req('login', data);
+    if(rslt.msg == '1')
+        location.href = 'login';
 }
 
 async function reg(rslt){
-	b.innerHTML = rslt.msg;
+    if(rslt.msg[0])
+        location.href = 'login';
+    else
+        b.innerHTML = rslt.msg[1];
 }
 
 async function login(rslt){

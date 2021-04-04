@@ -6,7 +6,9 @@
 		$reg = "";
 		$out = "<br><input type='button' value='Выйти' onclick=logout()>";
 	}
+	$justReg = $_SESSION['justReg'] ?? "";
 	$html = <<<EOD
+	$justReg
 	<form id="a" action="login">
 		<label>Логин:</label>
 		<input type="text" name="name">
