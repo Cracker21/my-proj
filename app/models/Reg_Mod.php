@@ -1,56 +1,86 @@
 <?php
 
 class Reg_Mod extends Model{
-	static function mailIsCorrect($email){
-        /*if($mark === 0){
-            $con = 'con3558';
-    		require_once "connect.php";
-			$mailCh = $link->prepare("select * from users where email =:email");
-			$mailCh->execute(['email'=> $email]);
-			$resMail= $mailCh->fetch(PDO::FETCH_ASSOC);
-        }*/
-        $err = "";
+	private static $err = "";
+
+	static function getError(){
+		return self::$err;
+	}
+
+	static function register(){
+		unset($_SESSION['verified_email']);
+		return 'Регистрация прошла успешно!';
+	}
+
+	static function emailIsCorrect($checkVerified = true){
+		$email = trim($_POST['email']);
+
+        $pdo = DB::get();
+		$mailExists = $pdo->fetchPr("select * from users where email =:email", ['email'=> $email])['email'] ?? false;
         if(filter_var($email, FILTER_VALIDATE_EMAIL)){
 		    if(iconv_strlen($email)<40){
-				/*if($email == $resMail['email']){
-				    $err = "Аккаунт с такой почтой уже существует!";
-				}*/
+				if($email == $mailExists){
+				    self::$err = "Аккаунт с такой почтой уже существует!";
+				}
 		    }else{
-		        $err = 'Длина почты - до 40 символов!';
+		        self::$err = 'Длина почты - до 40 символов!';
+		        return;
 		    }
 		}else{
-		    $err = "Некорректная почта!";
+		    self::$err = "Некорректная почта!";
+		    return;
 		}
-		if(empty($email))
-			$err = 'emp';
-		/*if($err == ""){
-		    if(!isset($_SESSION['verified_email'])||($_SESSION['verified_email'] != $email))
-		    	$err = 'Подтвердите почту!';
-		}*/
-		if($err=='')
-			return ['good'=>1];
-		else
-			return ['good'=>0,'err'=>$err];
+
+		$_SESSION['verified_email'] = $_SESSION['verified_email'] ?? "";
+		if(($_SESSION['verified_email'] != $email)&&$checkVerified){
+	    	self::$err = 'Подтвердите почту!';
+	    	return;
+	    }
+
+		return true;
+    }
+    static function nameIsCorrect(){
+    	return true;
     }
 
+    static function passIsCorrect(){
+    	return true;
+    }
+
+    static function dataIsCorrect(){
+    	if(isset($_POST['name'], $_POST['pass'], $_POST['pass2'], $_POST['email'])){
+	    	
+	    	trim($_POST['name']);
+	    	trim($_POST['email']);
+
+	    	foreach ($_POST as $key => $value) {
+	    		if(empty($_POST[$key])){
+	    			self::$err = "Заполните все поля";
+	    			return;
+	    		}
+	    	}    		
+			if(self::nameIsCorrect()&&self::passIsCorrect()&&self::emailIsCorrect())
+				return true;
+    	}else{
+    		self::$err = "refresh the page";
+    	}
+    }
+
+
 	static function sendCode(){
-		$email = trim(htmlentities($_POST['email']));
     	//проверка почты
-    	$mailCheck = self::mailIsCorrect($email);
-	    if($mailCheck['good']){
-            $_SESSION['timeWithDelay']= $_SESSION['timeWithDelay'] ?? time()-10;    //если не было задержки ставится
-            if($_SERVER['REQUEST_TIME']>$_SESSION['timeWithDelay']){
+	    if(self::emailIsCorrect(false)){
+            $_SESSION['timeWithDelay'] = $_SESSION['timeWithDelay'] ?? time()-10;    //если не было задержки ставится
+            if($_SERVER['REQUEST_TIME'] > $_SESSION['timeWithDelay']){
                 $_SESSION['timeWithDelay'] = time()+10;             //ставится задержка перед отправкой кода
                 //отправка кода
-                require_once '/var/www/mail.php';
-                /*$mail->Host = "smtp.gmail.com";
-                $mail->Username = 'vovik2113@gmail.com';
-                $mail->Password = 'qwaszxxzsawq';
+                require_once ROOT.'/app/mail.php';
+                $mail->Host = "smtp.gmail.com";
                 $mail->setFrom('vovik2113@gmail.com', 'Pentagram'); // From email and name
                 $mail->addAddress($email, "Гость"); // to email and name
                 $mail->Subject = 'Подтверждение почты';
                 $_SESSION['mailCode'] = mt_rand(100001,999999);
-                $mail->msgHTML("Код: ". $_SESSION['mailCode']);*/
+                $mail->msgHTML("Код: ". $_SESSION['mailCode']);
                 //$_SESSION['mailCode'] = 1111;
                 if($mail->send()){
                     return 'sent';

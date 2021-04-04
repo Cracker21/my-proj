@@ -6,10 +6,15 @@ class Reg_Ctrl extends Controller {
 		View::generate('reg.php', 'template.php', @$data);
 	}
 	static function post(){
-		if(@$_POST['action']=='sendCode')
+		if(@$_POST['act']=='sendCode')
 			echo json_encode(['msg' => Reg_Mod::sendCode()]);
-		else
-			echo json_encode(['msg' => 'suc']);
+		else{
+			if(Reg_Mod::dataIsCorrect()){
+				echo json_encode(['msg' => Reg_Mod::register()]);
+			}else{
+				echo json_encode(['msg' => Reg_Mod::getError()]);
+			}
+		}
 	}
 }
 

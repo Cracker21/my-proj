@@ -2,10 +2,10 @@
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-require $_SERVER['DOCUMENT_ROOT'] . '/mail/Exception.php';
-require $_SERVER['DOCUMENT_ROOT'] . '/mail/PHPMailer.php';
-require $_SERVER['DOCUMENT_ROOT'] . '/mail/SMTP.php';
-require 'config.php';
+/*require ROOT. '/mail/Exception.php';
+require ROOT. '/mail/PHPMailer.php';
+require ROOT. '/mail/SMTP.php';*/
+require ROOT.'/config.php';
 
 $mail = new PHPMailer;
 $mail->isSMTP();
