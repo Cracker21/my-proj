@@ -15,7 +15,7 @@
 		private function connect(){
 			require ROOT.'/config.php';
 			$dbh = new PDO('mysql:host=localhost;dbname=my', $DB_USER, $DB_PASS);
-			return $this->conn = $dbh;
+			$this->conn = $dbh;
 		}
 		function fetchPr($query, $where){						//подготовленный селект
 			$res = $this->conn->prepare($query);
@@ -28,6 +28,11 @@
 			$res = $this->conn->query($query);
 			$row = $res->fetch(PDO::FETCH_ASSOC);
 			return $row;
+		}
+
+		function insPr($query, $where){
+			$res = $this->conn->prepare($query);
+			$res->execute($where);
 		}
 
 	}

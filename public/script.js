@@ -15,7 +15,13 @@ async function sendCode(){
 	data.append('act', 'sendCode');
 	data.append('email', email.value);
 	let rslt = await req('reg', data);
-	code.innerHTML = rslt.msg;
+    if(rslt.msg[0]){
+        mTimer(30);
+        code.innerHTML = rslt.msg[1];
+    }else{
+        rsp.innerHTML = rslt.msg[1];
+    }
+
 }
 async function confEmail(){
   let data = new FormData();
@@ -24,16 +30,16 @@ async function confEmail(){
   let rslt = await req('reg', data);
   if(rslt.msg[0]){
     code.innerHTML = rslt.msg[1];
-    b.innerHTML = "";
+    rsp.innerHTML = "";
   }else
-    b.innerHTML = rslt.msg[1];
+    rsp.innerHTML = rslt.msg[1];
 }
 
 async function logout(){
     let data = new FormData();
     data.append('act', 'logout');
     let rslt = await req('login', data);
-    if(rslt.msg == '1')
+    if(rslt.msg)
         location.href = 'login';
 }
 
@@ -41,14 +47,14 @@ async function reg(rslt){
     if(rslt.msg[0])
         location.href = 'login';
     else
-        b.innerHTML = rslt.msg[1];
+        rsp.innerHTML = rslt.msg[1];
 }
 
 async function login(rslt){
   if(rslt.msg=='1')
     location.href = 'profile';
   else
-	  b.innerHTML = rslt.msg;
+	  rsp.innerHTML = rslt.msg;
 }
 
 async function req(act, data){
@@ -60,4 +66,28 @@ async function req(act, data){
     let result = response.json();
 
 	return result;   
+}
+function qs($s){
+    return document.querySelector($s);
+}
+
+function shP(e){
+  if (e.checked){
+    qs("input[name='pass']").type = "text";
+    qs("input[name='pass2']").type = "text";
+  }else{
+    qs("input[name='pass']").type = "password";
+    qs("input[name='pass2']").type = "password";
+  }
+}
+
+function mTimer(time){
+    let timer = setInterval(function(){
+        if(time <= 0){
+            clearInterval(timer);
+            t.innerHTML = "<input id='sC' type='button' value='Отправить код подтверждения' onclick='sendCode()'>";
+            return;
+        }
+    t.innerHTML = 'Повторная отправка возможна через '+time--;
+    },1000)
 }

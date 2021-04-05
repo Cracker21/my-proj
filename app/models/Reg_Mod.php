@@ -4,12 +4,16 @@ class Reg_Mod extends Model{
 	private static $err = "";
 	private static $email;
 	private static $name;
+	private static $pass;
 
 	static function getError(){
 		return [false, self::$err];
 	}
 
 	static function register(){
+		$db = DB::get();
+		self::$pass = password_hash(self::$pass, PASSWORD_DEFAULT);
+		$db->insPr("insert into users(name, pass, email) values(:name, :pass, :email)", [':name'=>self::$name, ':pass'=>self::$pass, ':email'=>self::$email]);
 		unset($_SESSION['codeField'], $_SESSION['codeSentAddr'], $_SESSION['confirmedEmail'], $_SESSION['name'], $_SESSION['email']);
 		$_SESSION['justReg'] = 'Регистрация прошла успешно! Теперь можно зайти в аккаунт<br>';
 		return [true];
@@ -74,6 +78,7 @@ class Reg_Mod extends Model{
 			self::$err = "Пароль слишком короткий!";
 			return;
 		}
+		self::$pass = $_POST['pass'];
     	return true;
     }
 
@@ -101,18 +106,18 @@ class Reg_Mod extends Model{
             require_once ROOT.'/app/mail.php';
             $mail->addAddress(self::$email, 'gost'); // to email and name
             $mail->Subject = 'Подтверждение почты';
-            $_SESSION['mailCode'] = mt_rand(100001,999999);
+            $_SESSION['mailCode'] = mt_rand(100000,999999);
             $_SESSION['mailCode'] = 1111;
             $mail->msgHTML("Код: ". $_SESSION['mailCode']);
             if($mail->send()){
             	$_SESSION['codeSentAddr'] = self::$email;
             	$_SESSION['codeField'] = "<input id='mailCode'><input type='button' value='Подтвердить почту' onclick='confEmail()'>";
-            	return $_SESSION['codeField'];
+            	return [true, $_SESSION['codeField']];
             }else{
             	return $mail->ErrorInfo;
             }
         }else{
-            return 'wait';
+            return [false, 'wait'];
         }
 	}
 
@@ -120,6 +125,7 @@ class Reg_Mod extends Model{
 		if(isset($_SESSION['codeSentAddr'])){
 			if($_POST['mailCode'] == $_SESSION['mailCode']){
 				$_SESSION['confirmedEmail'] = $_SESSION['codeSentAddr'];
+				unset($_SESSION['codeField']);
 				return [true, 'Почта подтверждена!'];
 			}else{
 				return [false, 'Неверный код!'];

@@ -10,6 +10,7 @@ class Login_Mod extends Model{
 		if(self::credAreValid()){
 			if(self::passIsCorrect()){
 				$_SESSION['usid'] = self::$usid;
+				unset($_SESSION['codeField'], $_SESSION['codeSentAddr'], $_SESSION['confirmedEmail'], $_SESSION['name'], $_SESSION['email']);
 				return "1";
 			}else{
 				return self::$err;
@@ -20,7 +21,7 @@ class Login_Mod extends Model{
 	}
 	static function logout(){
 		unset($_SESSION['usid']);
-		return '1';
+		return true;
 	}
 
 	private static function credAreValid(){
@@ -37,8 +38,8 @@ class Login_Mod extends Model{
 	private static function passIsCorrect(){
 		$db = DB::get();
 		if($res = $db->fetchPr("select * from users where name = :name", [':name'=>self::$name])){
-			if($res['name']==self::$name&&$res['pass']==self::$pass){
-				self::$usid = $res['user_id'];
+			if($res['name']==self::$name&&password_verify(self::$pass, $res['pass'])){
+				self::$usid = $res['usid'];
 				return true;
 			}else{
 				self::$err = 'Неверный логин или пароль';
