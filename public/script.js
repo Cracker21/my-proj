@@ -10,6 +10,8 @@ window.addEventListener('DOMContentLoaded',(e)=>{
       }
     }            
 })
+
+
 async function sendCode(){
 	let data = new FormData();
 	data.append('act', 'sendCode');
@@ -21,8 +23,8 @@ async function sendCode(){
     }else{
         rsp.innerHTML = rslt.msg[1];
     }
-
 }
+
 async function confEmail(){
   let data = new FormData();
   data.append('act', 'confirmEmail');
@@ -72,13 +74,15 @@ function qs($s){
 }
 
 function shP(e){
-  if (e.checked){
-    qs("input[name='pass']").type = "text";
-    qs("input[name='pass2']").type = "text";
-  }else{
-    qs("input[name='pass']").type = "password";
-    qs("input[name='pass2']").type = "password";
-  }
+    if(e.attributes[1].value == 'cls.png'){
+        qs("input[name='pass']").type = "text";
+        qs("input[name='pass2']").type = "text";
+        e.src = 'open.png';
+    }else{
+        qs("input[name='pass']").type = "password";
+        qs("input[name='pass2']").type = "password";
+        e.src = 'cls.png';
+    }
 }
 
 function mTimer(time){

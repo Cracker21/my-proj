@@ -1,5 +1,5 @@
 body{
-	background-color: #909090;
+	background-color: #344f38;
 }
 input{
 	outline: none;
@@ -7,9 +7,12 @@ input{
 	border-radius: 2px;
 	margin-bottom: 3px;
 }
+label{
+	color: #FFF;
+}
 a{
 	text-decoration: none;
-	color: #705;
+	color: #9eb5a1;
 }
 #form{
 	text-align: left;
@@ -22,4 +25,7 @@ input[type='button'], input[type='submit']{
 	padding: 2px;
 	padding-right: 6px; 
 	padding-left: 6px;
+}
+.shp{
+	height: 16px; 
 }

@@ -15,7 +15,7 @@ $html = <<<EOD
 		<label>Имя</label><br>
 		<input name='name' value="$name"><br>
 		<label>Пароль</label><br>
-		<input type='password' name='pass'><input onclick='shP(this)' type='checkbox'>Показать пароль<br>
+		<input type='password' name='pass'><img onclick='shP(this)' src='cls.png' alt='Показать пароль'><br>
 		<label>Повторите пароль</label><br>
 		<input type='password' name='pass2'><br>
 		<label>Почта</label><br>
