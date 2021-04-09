@@ -19,10 +19,6 @@ class Login_Mod extends Model{
 			return self::$err;
 		}
 	}
-	static function logout(){
-		unset($_SESSION['usid']);
-		return true;
-	}
 
 	private static function credAreValid(){
 		self::$name = trim($_POST['name']);

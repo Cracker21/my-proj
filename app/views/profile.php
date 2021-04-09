@@ -1,7 +1,9 @@
 <?php
 $title = "Profile";
+$page = 'profile';
+
 $userdata = Profile_Mod::getUserData();
-$html = <<< EOD
-$userdata<br>
-<br><input type='button' value='Выйти' onclick=logout()>
+$data = <<< EOD
+<div id='userdata'>$userdata</div>
+<br><br>
 EOD;

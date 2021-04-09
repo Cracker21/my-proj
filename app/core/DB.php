@@ -1,6 +1,6 @@
 <?php
 	class DB {
-		private $conn;
+		public $pdo;
 		private static $inst = null;
 
 		private function __construct() {}
@@ -15,24 +15,24 @@
 		private function connect(){
 			require ROOT.'/config.php';
 			$dbh = new PDO('mysql:host=localhost;dbname=my', $DB_USER, $DB_PASS);
-			$this->conn = $dbh;
+			$this->pdo = $dbh;
 		}
-		function fetchPr($query, $where){						//подготовленный селект
-			$res = $this->conn->prepare($query);
-			$res->execute($where);
+		function fetchPr($query, $data){						//подготовленный селект
+			$res = $this->pdo->prepare($query);
+			$res->execute($data);
     		$row = $res->fetch(PDO::FETCH_ASSOC);
     		return $row;
 		}
 
 		function fetch($query){									//обычный селект
-			$res = $this->conn->query($query);
+			$res = $this->pdo->query($query);
 			$row = $res->fetch(PDO::FETCH_ASSOC);
 			return $row;
 		}
 
-		function insPr($query, $where){
-			$res = $this->conn->prepare($query);
-			$res->execute($where);
+		function insPr($query, $data){
+			$res = $this->pdo->prepare($query);
+			$res->execute($data);
 		}
 
 	}

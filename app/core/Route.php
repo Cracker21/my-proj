@@ -1,24 +1,27 @@
 <?php
 
 class Route{
-	private static $authRoutes = ['profile', 'login', 'chat'];
+	private static $authRoutes = ['profile', 'login', 'chats'];
 	private static $noAuthRoutes = ['reg', 'login'];
-	private	static $route;
+	public static $route;
 
-	function __construct(){
-		self::$route = explode("/", $_SERVER['REQUEST_URI'])[1];
-	}
 
 	static function isNotMediaOrJS(){
-		if(self::$route == 'script.js'){
-			require_once ROOT.'/public/script.js';			//put server req uri if more than 2 elements
-			header("Content-Type: text/javascript");
-		}else if(self::$route == 'style.css'){
-			require_once ROOT.'/public/style/'.self::$route;
-			header("Content-Type: text/css");
-		}else if(preg_match('/\.png$/', self::$route)){
-			require_once ROOT.'/public/style/'.self::$route;
-			header("Content-Type: image/png");
+		if($_SERVER['REQUEST_METHOD']=="GET"){
+			if(in_array(self::$route,['script.js', 'manifest.json', 'sw.js'])){
+				header("Content-Type: text/javascript");				
+				require_once ROOT.'/public/'.self::$route;
+			}else if(self::$route == 'style.css'){
+				header("Content-Type: text/css");				
+				require_once ROOT.'/public/style/'.self::$route;
+			}else if(preg_match('/\.png$/', self::$route)){
+				header("Content-Type: image/png");				
+				require_once ROOT.'/public/style/'.self::$route;
+			}else if(self::$route == 'offline.html'){
+				require ROOT.'/public/offline.html';
+			}else{
+				return true;
+			}
 		}else{
 			return true;
 		}
@@ -30,7 +33,9 @@ class Route{
 					self::go(self::$route, 'post');
 				}
 		}else{														//GET
-			if(isset($_SESSION["usid"])){							//если авторизован
+			if(self::$route == 'logout'){
+				self::logout();
+			}else if(isset($_SESSION["usid"])){							//если авторизован
 				if(in_array(self::$route, self::$authRoutes)){			//если файл из массива
 					self::go(self::$route, 'get');										//открыть нужную стр
 				}else{
@@ -49,5 +54,10 @@ class Route{
 	private static function go($route, $method){
 		$cls = $route."_Ctrl";
 		$cls::$method();
+	}
+
+	static function logout(){
+		unset($_SESSION['usid']);
+		header('Location: login');
 	}
 }

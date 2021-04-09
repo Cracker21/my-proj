@@ -1,5 +1,7 @@
 <?php
 $title = "Registration";
+$page = 'reg';
+
 $mailCode = $_SESSION['codeField'] ?? "";
 $name = $_SESSION['name'] ?? "";
 $email = $_SESSION['confirmedEmail'] ?? $_SESSION['codeSentAddr'] ?? $_SESSION['email'] ?? "";
@@ -8,7 +10,7 @@ if($_SERVER['REQUEST_TIME']>@$_SESSION['timeWithDelay']){
 }else{
 	$t_cont = "<script>mTimer(". ($_SESSION['timeWithDelay']-$_SERVER['REQUEST_TIME']) .")</script>";
 }
-$html = <<<EOD
+$data = <<<EOD
 <div id='form'>
 	<form action='reg'>
 		<label id='rsp'></label><br>
@@ -23,7 +25,6 @@ $html = <<<EOD
 		<div id='code' class='i'>$mailCode</div><br>
 		<input type='submit' value='Регистрация'>
 	</form>
-	<a href='login'>Авторизоваться</a>
 </div>
 EOD;
 ?>

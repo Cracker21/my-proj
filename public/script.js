@@ -1,22 +1,33 @@
 "use strict"
 
-window.addEventListener('DOMContentLoaded',(e)=>{
-    document.forms[0].onsubmit = async (e)=>{
-        e.preventDefault();
-        let data = new FormData(e.target);
-		let rslt = await req(e.target.action, data)
-      if(rslt){
-        eval(e.target.action.split('/')[3] + '(rslt)');		//в ф-цию отправляется результат отправки формы
-      }
-    }            
+window.addEventListener('DOMContentLoaded', async (e)=>{
+    if(document.forms[0]){
+        document.forms[0].onsubmit = async (e)=>{
+            e.preventDefault();
+            let data = new FormData(e.target);
+    		let rslt = await req(e.target.action, data)
+          if(rslt){
+            eval(e.target.action.split('/')[3] + '(rslt)');		//в ф-цию отправляется результат отправки формы
+          }
+        }
+    }
+    let tab = container.querySelector('a[href="'+container.className+'"]');         //выделяет выбранную вкладку
+    tab.classList.add('selected');
+    /*if ('serviceWorker' in navigator) {
+        try {
+            const reg = await navigator.serviceWorker.register('sw.js')
+            console.log('Service worker register success', reg)
+        } catch (e) {
+            console.log('Service worker register fail')
+        }
+    }*/
 })
 
-
 async function sendCode(){
-	let data = new FormData();
-	data.append('act', 'sendCode');
-	data.append('email', email.value);
-	let rslt = await req('reg', data);
+    let data = new FormData();
+    data.append('act', 'sendCode');
+    data.append('email', email.value);
+    let rslt = await req('reg', data);
     if(rslt.msg[0]){
         mTimer(30);
         code.innerHTML = rslt.msg[1];
@@ -24,6 +35,8 @@ async function sendCode(){
         rsp.innerHTML = rslt.msg[1];
     }
 }
+
+
 
 async function confEmail(){
   let data = new FormData();
@@ -35,14 +48,6 @@ async function confEmail(){
     rsp.innerHTML = "";
   }else
     rsp.innerHTML = rslt.msg[1];
-}
-
-async function logout(){
-    let data = new FormData();
-    data.append('act', 'logout');
-    let rslt = await req('login', data);
-    if(rslt.msg)
-        location.href = 'login';
 }
 
 async function reg(rslt){
@@ -66,6 +71,8 @@ async function req(act, data){
    	});
 
     let result = response.json();
+
+    if(result.msg == 0)return false;
 
 	return result;   
 }

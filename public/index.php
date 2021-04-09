@@ -8,7 +8,7 @@
 		require "../vendor/autoload.php";
 		require "../app/core/autoload.php";
 		Session::go();
-		$rou = new Route();
+		Route::$route = explode("/", $_SERVER['REQUEST_URI'])[1];
 		if(Route::isNotMediaOrJS()){
 			Route::handle();
 		}
@@ -18,6 +18,6 @@
 		if($_SERVER['REQUEST_METHOD'] == 'GET')
 			echo 'Произошла ошибка';
 		else
-			echo json_encode(['msg'=>'Произошла ошибка']);
+			echo json_encode(['msg'=>[0,'Произошла ошибка']]);
 	}
 ?>

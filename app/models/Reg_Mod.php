@@ -117,7 +117,7 @@ class Reg_Mod extends Model{
             	return $mail->ErrorInfo;
             }
         }else{
-            return [false, 'wait'];
+            return [false];
         }
 	}
 
