@@ -1,0 +1,21 @@
+{
+  "name": "Pentagram",
+  "short_name": "pent",
+  "theme_color": "#344f38",
+  "background_color": "#a47070",
+  "display": "standalone",
+  "orientation": "portrait",
+  "start_url": ".",
+  "icons": [
+  	{
+  		"src": "icon.png",
+  		"sizes": "16x16",
+  		"type": "image/png"
+  	},
+  	{
+  		"src": "144.png",
+  		"sizes": "144x144",
+  		"type": "image/png"
+  	}
+  ]
+}
