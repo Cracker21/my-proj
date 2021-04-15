@@ -6,6 +6,10 @@ class chats_Ctrl extends Controller {
 		View::generate('chats.php', 'template.php', @$data);
 	}
 	static function post(){
-		echo json_encode(['msg' => Profile_Mod::getChats()]);
+		if(@$_POST['act']=='loadMsgs'){
+			echo json_encode(['msg' => Chats_Mod::getMsgs()]);
+		}else{
+			echo json_encode(['msg' => Chats_Mod::getChats()]);
+		}
 	}
 }

@@ -47,3 +47,17 @@ input[type='button'], input[type='submit']{
 .selected{
 	border-bottom: 2px solid red;
 }
+.chat{
+	background: transparent;
+	display: inline-block;
+	color: #FFF;
+	margin: 10px;
+}
+.chats{
+	display: inline-table;
+}
+#msgs{
+	display: inline-table;
+	background-color: #79965c;
+	padding: 5px;
+}

@@ -23,6 +23,15 @@ window.addEventListener('DOMContentLoaded', async (e)=>{
     }*/
 })
 
+async function load(chid){
+    let data = new FormData();
+    data.append('act', 'loadMsgs');
+    data.append('chid', chid);
+    let rslt = await req('chats', data);
+    msgs.innerHTML = rslt.msg[1];
+}
+
+
 async function sendCode(){
     let data = new FormData();
     data.append('act', 'sendCode');

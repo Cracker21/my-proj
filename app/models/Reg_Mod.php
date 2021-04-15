@@ -114,7 +114,7 @@ class Reg_Mod extends Model{
             	$_SESSION['codeField'] = "<input id='mailCode'><input type='button' value='Подтвердить почту' onclick='confEmail()'>";
             	return [true, $_SESSION['codeField']];
             }else{
-            	return $mail->ErrorInfo;
+            	throw new Exception($mail->ErrorInfo);
             }
         }else{
             return [false];
