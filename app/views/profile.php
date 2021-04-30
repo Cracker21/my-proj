@@ -2,7 +2,7 @@
 $title = "Profile";
 $page = 'profile';
 
-$userdata = Profile_Mod::getUserData();
+$userdata = \Models\Profile_Mod::getUserData();
 $data = <<< EOD
 <div id='userdata'>$userdata</div>
 <br><br>

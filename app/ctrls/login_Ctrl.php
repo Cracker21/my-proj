@@ -1,9 +1,11 @@
 <?php
+namespace Ctrls;
+use Models\Login_Mod;
 
-class Login_Ctrl extends Controller {
+class Login_Ctrl extends \Core\Controller {
 
 	static function get(){	
-		View::generate('login.php', 'template.php', @$data);
+		\Core\View::generate('login.php', 'template.php', @$data);
 	}
 	static function post(){
 		if(@$_POST['act']!= 'logout'){

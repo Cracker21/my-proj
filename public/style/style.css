@@ -52,6 +52,7 @@ input[type='button'], input[type='submit']{
 	display: inline-block;
 	color: #FFF;
 	margin: 10px;
+	outline: none;
 }
 .chats{
 	display: inline-table;
@@ -60,4 +61,7 @@ input[type='button'], input[type='submit']{
 	display: inline-table;
 	background-color: #79965c;
 	padding: 5px;
+}
+.active{
+	border: 1px solid red;
 }

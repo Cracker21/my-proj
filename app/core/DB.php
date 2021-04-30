@@ -1,4 +1,6 @@
 <?php
+	namespace Core;
+
 	class DB {
 		public $pdo;
 		private static $inst = null;
@@ -14,19 +16,19 @@
 		}
 		private function connect(){
 			require ROOT.'/config.php';
-			$dbh = new PDO('mysql:host=localhost;dbname=my', $DB_USER, $DB_PASS);
+			$dbh = new \PDO('mysql:host=localhost;dbname=my', $DB_USER, $DB_PASS);
 			$this->pdo = $dbh;
 		}
 		function fetchPr($query, $data){						//подготовленный селект
 			$res = $this->pdo->prepare($query);
 			$res->execute($data);
-    		$row = $res->fetch(PDO::FETCH_ASSOC);
+    		$row = $res->fetch(\PDO::FETCH_ASSOC);
     		return $row;
 		}
 
 		function fetch($query){									//обычный селект
 			$res = $this->pdo->query($query);
-			$row = $res->fetch(PDO::FETCH_ASSOC);
+			$row = $res->fetch(\PDO::FETCH_ASSOC);
 			return $row;
 		}
 

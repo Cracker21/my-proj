@@ -1,9 +1,12 @@
 <?php
 
-class Reg_Ctrl extends Controller {
+namespace Ctrls;
+use Models\Reg_Mod;
+
+class Reg_Ctrl extends \Core\Controller {
 
 	static function get(){		
-		View::generate('reg.php', 'template.php', @$data);
+		\Core\View::generate('reg.php', 'template.php', @$data);
 	}
 	static function post(){
 		if(@$_POST['act']=='sendCode'){

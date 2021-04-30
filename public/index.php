@@ -2,14 +2,15 @@
 	error_reporting(E_ALL);
 	ini_set('display_errors','1');
 	define('ROOT', $_SERVER['DOCUMENT_ROOT']);
+	use Core\Route;
 
 	try{
 		//require __DIR__.$_SERVER['REQUEST_URI'];
 		require "../vendor/autoload.php";
-		require "../app/core/autoload.php";
-		Session::go();
+			
 		Route::$route = explode("/", $_SERVER['REQUEST_URI'])[1];
 		if(Route::isNotMediaOrJS()){
+			Core\Session::go();
 			Route::handle();
 		}
 	}catch(Throwable $e){

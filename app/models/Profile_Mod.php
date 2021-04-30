@@ -1,6 +1,9 @@
 <?php
+namespace Models;
+use Core\DB;
 
-class Profile_Mod extends Model{
+
+class Profile_Mod extends \Core\Model{
 
 	static function getUserData(){
 		$db = DB::get();

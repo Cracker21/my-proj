@@ -23,10 +23,18 @@ window.addEventListener('DOMContentLoaded', async (e)=>{
     }*/
 })
 
-async function load(chid){
+function delActive(){
+    let arr = document.getElementsByClassName('active');
+    if(arr[0])arr[0].classList.remove('active');
+}
+
+
+async function load(el){
+    delActive();
+    el.classList.add('active');
     let data = new FormData();
     data.append('act', 'loadMsgs');
-    data.append('chid', chid);
+    data.append('chid', el.id);
     let rslt = await req('chats', data);
     msgs.innerHTML = rslt.msg[1];
 }

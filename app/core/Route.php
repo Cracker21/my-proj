@@ -1,4 +1,5 @@
 <?php
+namespace Core;
 
 class Route{
 	private static $authRoutes = ['profile', 'login', 'chats'];
@@ -8,7 +9,7 @@ class Route{
 
 	static function isNotMediaOrJS(){
 		if($_SERVER['REQUEST_METHOD']=="GET"){
-			if(in_array(self::$route,['script.js', 'manifest.json', 'sw.js'])){
+			if(in_array(self::$route,['script.js', 'manifest.json', 'sw.js', 'ws.js'])){
 				header("Content-Type: text/javascript");				
 				require_once ROOT.'/public/'.self::$route;
 			}else if(self::$route == 'style.css'){
@@ -17,8 +18,8 @@ class Route{
 			}else if(preg_match('/\.png$/', self::$route)){
 				header("Content-Type: image/png");				
 				require_once ROOT.'/public/style/'.self::$route;
-			}else if(self::$route == 'offline.html'){
-				require ROOT.'/public/offline.html';
+			}else if(self::$route == 'ws'){
+				require ROOT.'/app/core/WS.php';
 			}else{
 				return true;
 			}
@@ -52,12 +53,15 @@ class Route{
 	}
 
 	private static function go($route, $method){
-		$cls = $route."_Ctrl";
+		$cls = "\\Ctrls\\".$route."_Ctrl";
 		$cls::$method();
 	}
 
 	static function logout(){
-		unset($_SESSION['usid']);
+		$db = \Core\DB::get();
+		if(!$db->pdo->query("update users set `sid` = null where sid = '".session_id()."'"))
+			throw new \Exception($db->pdo->errorInfo()[2]);
+		unset($_SESSION['usid'], $_SESSION['name']);
 		header('Location: login');
 	}
 }

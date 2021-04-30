@@ -1,9 +1,12 @@
 <?php
-	
-class chats_Ctrl extends Controller {
+
+namespace Ctrls;
+use Models\Chats_Mod;
+
+class chats_Ctrl extends \Core\Controller {
 
 	static function get(){		
-		View::generate('chats.php', 'template.php', @$data);
+		\Core\View::generate('chats.php', 'template.php', @$data);
 	}
 	static function post(){
 		if(@$_POST['act']=='loadMsgs'){

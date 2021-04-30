@@ -6,13 +6,17 @@
 	<link href="style.css" rel="stylesheet" type="text/css">
 	<link rel="icon" type="image/png" href="icon.png" />
 	<link rel="manifest" href="manifest.json" />
-	<script type="text/javascript" src="script.js"></script>
+	<script src="script.js"></script>
+	<script src="ws.js"></script>
 </head>
 <body>
+	<div id="container" class="<?php echo $page ?>">
 	<?php
-		echo "<div id='container' class='$page'>";
-		echo "$menu<br>$data<br>";
-		echo "</div>";
+		
+		echo $html;
 	?>
+	<input id='sid' type='hidden' value=<?php echo session_id() ?>>
+	<div id='debug'><?php echo @$_SESSION['name'] ?></div>
+	</div>
 </body>
 </html>

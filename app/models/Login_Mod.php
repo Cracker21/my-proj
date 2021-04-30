@@ -1,6 +1,7 @@
 <?php
+namespace Models;
 
-class Login_Mod extends Model{
+class Login_Mod extends \Core\Model{
 	private static $name;
 	private static $pass;
 	private static $err;
@@ -10,7 +11,11 @@ class Login_Mod extends Model{
 		if(self::credAreValid()){
 			if(self::passIsCorrect()){
 				$_SESSION['usid'] = self::$usid;
-				unset($_SESSION['codeField'], $_SESSION['codeSentAddr'], $_SESSION['confirmedEmail'], $_SESSION['name'], $_SESSION['email']);
+				$_SESSION['name'] = self::$name;
+				$db = \Core\DB::get();
+				\Core\Session::logout($db);
+				if(!$db->pdo->query("update users set `sid` = '".session_id()."' where usid = ".$_SESSION['usid']))
+					throw new \Exception($db->pdo->errorInfo()[2]);
 				return "1";
 			}else{
 				return self::$err;
@@ -32,7 +37,7 @@ class Login_Mod extends Model{
 	}
 
 	private static function passIsCorrect(){
-		$db = DB::get();
+		$db = \Core\DB::get();
 		if($res = $db->fetchPr("select * from users where name = :name", [':name'=>self::$name])){
 			if($res['name']==self::$name&&password_verify(self::$pass, $res['pass'])){
 				self::$usid = $res['usid'];

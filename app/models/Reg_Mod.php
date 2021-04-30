@@ -1,6 +1,8 @@
 <?php
+use Core\DB;
+namespace Models;
 
-class Reg_Mod extends Model{
+class Reg_Mod extends \Core\Model{
 	private static $err = "";
 	private static $email;
 	private static $name;
@@ -114,7 +116,7 @@ class Reg_Mod extends Model{
             	$_SESSION['codeField'] = "<input id='mailCode'><input type='button' value='Подтвердить почту' onclick='confEmail()'>";
             	return [true, $_SESSION['codeField']];
             }else{
-            	throw new Exception($mail->ErrorInfo);
+            	throw new \Exception($mail->ErrorInfo);
             }
         }else{
             return [false];
