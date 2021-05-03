@@ -1,5 +1,5 @@
 <?php
-	define('ROOT', "/var/www");
+	define('ROOT', "/var/www/main");
 
 	use Workerman\Worker;
 	use Core\DB;
