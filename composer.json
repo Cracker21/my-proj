@@ -5,8 +5,8 @@
     },
     "autoload": {
     	"psr-4": {
-    		"Core\\": "app/core/",
-    		"Ctrls\\": "app/ctrls/",
+    		"Core\\": "app/core",
+    		"Ctrls\\": "app/ctrls",
     		"Models\\": "app/models"
     	}
     }

@@ -16,7 +16,7 @@
 		}
 		private function connect(){
 			require ROOT.'/config.php';
-			$dbh = new \PDO('mysql:host=localhost;dbname=my', $DB_USER, $DB_PASS);
+			$dbh = new \PDO('mysql:host=localhost;dbname='.$DB_NAME, $DB_USER, $DB_PASS);
 			$this->pdo = $dbh;
 		}
 		function fetchPr($query, $data){						//подготовленный селект
